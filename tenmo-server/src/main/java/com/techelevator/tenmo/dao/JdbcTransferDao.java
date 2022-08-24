@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class JdbcTransferDao  implements TransferDao {
+public class JdbcTransferDao implements TransferDao {
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
@@ -55,6 +55,7 @@ public class JdbcTransferDao  implements TransferDao {
             throw new Exception("Transfer failed due to a lack of funds");
         } else {
             jdbcTemplate.update(sql, userFrom, userTo, amount);
+
             String addSql = "UPDATE account SET balance = balance + ? WHERE account_id = ?";
             jdbcTemplate.update(addSql, amount, userTo);
             String subtractSql = "UPDATE account SET balance = balance - ? WHERE account_id = ?";
@@ -62,6 +63,17 @@ public class JdbcTransferDao  implements TransferDao {
             success = true;
         }
         return success;                     // success is always true? CHECK
+    }
+
+    @Override
+    public int createTransfer(Transfer transfer) {
+
+        String sql = "INSERT INTO transfer (transfer_type_id, transfer_status_id, account_from, account_to,amount) "
+        + "VALUES (?, ?, ?, ?, ?) RETURNING transfer_id";
+
+            Integer id = jdbcTemplate.update(sql, Integer.class, transfer.getTransferTypeId(), transfer.getTransferStatusId(), transfer.getAccountFrom(), transfer.getAccountTo(), transfer.getAmount());
+
+        return id;
     }
 
     private Transfer mapRowToTransfer(SqlRowSet rowSet) {

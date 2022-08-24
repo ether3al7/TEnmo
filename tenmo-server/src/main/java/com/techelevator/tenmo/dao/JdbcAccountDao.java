@@ -10,7 +10,7 @@ import javax.sql.DataSource;
 import java.math.BigDecimal;
 
 @Component
-public class JdbcAccountDao  implements AccountDao {
+public class JdbcAccountDao implements AccountDao {
 
     private JdbcTemplate jdbcTemplate;
     public JdbcAccountDao(DataSource dataSource) {
@@ -44,7 +44,18 @@ public class JdbcAccountDao  implements AccountDao {
     }
 
     @Override
-    public BigDecimal getBalance(int userId) {
+    public BigDecimal getBalance(String username) {
+        Account account = new Account();
+        String sql = "SELECT balance FROM account JOIN tenmo_user USING(user_id) WHERE username = ?;";
+        SqlRowSet results = jdbcTemplate.queryForRowSet(sql, username);
+        if (results.next()) {
+            account = mapRowToAccount(results);
+        }
+        return account.getBalance();
+    }
+
+    @Override
+    public BigDecimal getBalance(int userId) { //added this method for if condition in sendTransfer
         Account account = new Account();
         String sql = "SELECT balance FROM account WHERE user_id = ?;";
         SqlRowSet results = jdbcTemplate.queryForRowSet(sql, userId);
@@ -52,6 +63,13 @@ public class JdbcAccountDao  implements AccountDao {
             account = mapRowToAccount(results);
         }
         return account.getBalance();
+    }
+
+    @Override
+    public Account updateAccount(Account account) {
+        String sql = "UPDATE account SET balance = ? WHERE account_id = ?;";
+        jdbcTemplate.update(sql,account.getBalance(),account.getAccountId());
+        return account;
     }
 
     private Account mapRowToAccount(SqlRowSet rowSet) {
