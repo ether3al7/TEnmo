@@ -4,27 +4,74 @@ import com.techelevator.tenmo.model.Transfer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
+import org.springframework.stereotype.Component;
 
+import javax.sql.DataSource;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
+@Component
 public class JdbcTransferDao  implements TransferDao {
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
+    private AccountDao accountDao;
+    public JdbcTransferDao(AccountDao accountDao, DataSource dataSource) {
+        this.jdbcTemplate = new JdbcTemplate(dataSource);
+        this.accountDao = accountDao;
+    }
 
     @Override
     public List<Transfer> getTransferList(int userId) {
-        return null;
+        List<Transfer> transfers = new ArrayList<>();
+        String sql = "SELECT transfer_id, transfer_type_id, transfer_status_id, account_from, account_to, amount "
+                + "FROM transfer;";
+        SqlRowSet results = jdbcTemplate.queryForRowSet(sql);
+        while (results.next()) {
+            transfers.add(mapRowToTransfer(results));
+        }
+        return transfers;
     }
 
     @Override
     public Transfer getTransferById(int transactionId) {
-        return null;
+        Transfer transfer = null;
+        String sql = "SELECT transfer_id, transfer_type_id, transfer_status_id, account_from, account_to, amount "
+                + "FROM transfer WHERE transfer_id = ?;";
+        SqlRowSet results = jdbcTemplate.queryForRowSet(sql);
+        if (results.next()) {
+            transfer = mapRowToTransfer(results);
+        }
+        return transfer;
     }
 
     @Override
-    public String sendTransfer(int userFrom, int userTo, BigDecimal amount) {
-        return null;
+    public boolean sendTransfer(int userFrom, int userTo, BigDecimal amount)  throws Exception {
+        boolean success = false;
+        String sql = "INSERT INTO transfer (transfer_type_id, transfer_status_id, account_from, account_to, amount) "
+                + "VALUES ('Send', 'Accepted', ?, ?, ?)";
+        if (amount.doubleValue() > accountDao.getBalance(userFrom).doubleValue()) {
+            throw new Exception("Transfer failed due to a lack of funds");
+        } else {
+            jdbcTemplate.update(sql, userFrom, userTo, amount);
+            String addSql = "UPDATE account SET balance = balance + ? WHERE account_id = ?";
+            jdbcTemplate.update(addSql, amount, userTo);
+            String subtractSql = "UPDATE account SET balance = balance - ? WHERE account_id = ?";
+            jdbcTemplate.update(subtractSql, amount, userFrom);
+            success = true;
+        }
+        return success;                     // success is always true? CHECK
+    }
+
+    private Transfer mapRowToTransfer(SqlRowSet rowSet) {
+        Transfer transfer = new Transfer();
+        transfer.setTransferID(rowSet.getInt("transfer_id"));
+        transfer.setTransferTypeId(rowSet.getInt("transfer_type_id"));
+        transfer.setTransferStatusId(rowSet.getInt("transfer_status_id"));
+        transfer.setAccountFrom(rowSet.getInt("account_from"));
+        transfer.setAccountTo(rowSet.getInt("account_to"));
+        transfer.setAmount(rowSet.getBigDecimal("amount"));
+        return transfer;
     }
 }
