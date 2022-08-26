@@ -71,9 +71,11 @@ public class AccountService {
     public BigDecimal getBalance(AuthenticatedUser authenticatedUser) {
         BigDecimal balance = null;
         try {
-            ResponseEntity<BigDecimal> response = restTemplate.exchange(API_BASE_URL + "account/balance/" + authenticatedUser.getUser().getId()
-            , HttpMethod.GET, makeAuthEntity(), BigDecimal.class);
-            balance = response.getBody();
+            balance = restTemplate.exchange(API_BASE_URL + "account/balance/" + authenticatedUser.getUser().getId(),
+                    HttpMethod.GET, makeAuthEntity(), BigDecimal.class).getBody();
+//            ResponseEntity<BigDecimal> response = restTemplate.exchange(API_BASE_URL + "account/balance/" + authenticatedUser.getUser().getId()
+//            , HttpMethod.GET, makeAuthEntity(), BigDecimal.class);
+//            balance = response.getBody();
         } catch (RestClientResponseException |ResourceAccessException e) {
             BasicLogger.log(e.getMessage());
         }

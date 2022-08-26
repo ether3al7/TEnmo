@@ -59,7 +59,7 @@ public class TransferService {
         User[] users = null;
         try {
             ResponseEntity<User[]> response =
-                    restTemplate.exchange(API_BASE_URL, HttpMethod.GET, makeAuthEntity(),User[].class);
+                    restTemplate.exchange(API_BASE_URL + "user", HttpMethod.GET, makeAuthEntity(),User[].class);
             users = response.getBody();
         } catch (RestClientResponseException | ResourceAccessException e) {
             BasicLogger.log(e.getMessage());

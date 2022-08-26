@@ -27,8 +27,8 @@ public class ServerController {
     }
      //Account
     @GetMapping(path= "/account/balance/{id}")
-    public BigDecimal getAccountBalance(@PathVariable int userId) {
-        return accountDao.getBalance(userId);
+    public BigDecimal getAccountBalance(@PathVariable int id) {
+        return accountDao.getBalance(id);
     }
 
     @GetMapping(path= "/account/{id}")
@@ -38,12 +38,12 @@ public class ServerController {
 
     //User
     @GetMapping(path="/user")
-    public List<User> getAllUsers (){
+    public List<User> getAllUsers(){
         return userDao.findAll();
     }
 
     @GetMapping(path= "/user/{id}")
-    public Integer getAccountId(@PathVariable int userId){return accountDao.getAccountId(userId); }
+    public Integer getAccountId(@PathVariable int id){return accountDao.getAccountId(id); }
 
     @PostMapping(path="")
     public int createTransfer(Transfer transfer){
