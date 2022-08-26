@@ -1,12 +1,9 @@
 package com.techelevator;
 
-import com.techelevator.model.AuthenticatedUser;
-import com.techelevator.model.Transfer;
-import com.techelevator.model.User;
+import com.techelevator.model.*;
 import com.techelevator.services.AccountService;
 import com.techelevator.services.AuthenticationService;
 import com.techelevator.services.ConsoleService;
-import com.techelevator.model.UserCredentials;
 import com.techelevator.services.TransferService;
 
 import java.math.BigDecimal;
@@ -124,6 +121,9 @@ public class App {
 	private void sendBucks() {
 		User[]users = transferService.getAllUsers();
         Transfer transfer = new Transfer();
+        Account sender = accountService.getByUserId(currentUser.getUser().getId());         // For handling updated sender balance
+        System.out.println(currentUser.getUser().getId());                                  // 1001
+        Account receiver = null;                                                            // For handling updated receiver balance
 
         if (users != null) {
             System.out.println("-------------------------------------------\n" +
@@ -131,7 +131,8 @@ public class App {
                     "ID          Name\n" +
                     "-------------------------------------------");
             for (User user : users) {
-                System.out.println(accountService.getByUserId(currentUser.getUser().getId()) + "   " + accountService.getUsername(user.getId()));
+//                System.out.println(accountService.getByUserId(currentUser.getUser().getId()) + "   " + accountService.getUsername(user.getId()));
+                System.out.println(user.getId() + "    " + user.getUsername());
             }
             System.out.println("-------------------------------------------");
         }
@@ -141,11 +142,12 @@ public class App {
         Integer userTo = console.promptForInt("Enter ID of user you are sending to (0 to cancel):");
         Integer accountFrom =  accountService.getAccountId(currentUser.getUser().getId());
 
-        if (accountFrom.equals(userTo)) {
-           //  System.out.println("cannot send money to self");
-           //  userTo = console.promptForInt("Cannot send money to self");
+        while (accountFrom.equals(userTo)) {
+//             System.out.println("cannot send money to self");
+             userTo = console.promptForInt("Cannot send money to self");
 
-        } else {
+        }
+            receiver = accountService.getByAccountId(userTo);                           // should be userTo, not accountFrom... XD
             BigDecimal amountToSend = console.promptForBigDecimal("Enter amount:");
 
         //  if (amountToSend.intValue() <= accountService.getBalance(currentUser).intValue())
@@ -159,13 +161,21 @@ public class App {
                 transfer.setAmount(amountToSend);
 
                 transferService.addTransfer(transfer);
-                BigDecimal remainingBalance = accountService.getBalance(currentUser);
-                System.out.println("Remaining Balance: " + remainingBalance);
+//                BigDecimal remainingBalance = accountService.getBalance(currentUser);
+                BigDecimal remainingBalance = accountService.getBalance(currentUser).subtract(amountToSend);
+                sender.setBalance(accountService.getBalance(currentUser).subtract(amountToSend));        // sender's new balance
+                receiver.setBalance(accountService.getBalance(currentUser).add(amountToSend));           // receiver's new balance
+                System.out.println("Object's balance: " + sender.getBalance() + "  Database's balance: " + accountService.getBalance(currentUser));
+                accountService.update(sender);                                                           // write to database
+                System.out.println("Object's balance: " + sender.getBalance() + "  Database's balance: " + accountService.getBalance(currentUser));
+                accountService.update(receiver);                                                         // write to database
+
+                System.out.println("Remaining Balance: " + accountService.getBalance(currentUser));
 
             } else { // can clean this up
                 System.out.println("Not enough money in account or money entered must be greater than 0");
             }
-        }
+
 	}
 
 	private void requestBucks() {

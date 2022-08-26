@@ -47,10 +47,10 @@ public class JdbcTransferDao implements TransferDao {
     }
 
     @Override
-    public boolean sendTransfer(int userFrom, int userTo, BigDecimal amount)  throws Exception {
+    public boolean sendTransfer(int userFrom, int userTo, BigDecimal amount)  throws Exception {            // maybe a Transfer object instead
         boolean success = false;
         String sql = "INSERT INTO transfer (transfer_type_id, transfer_status_id, account_from, account_to, amount) "
-                + "VALUES ('Send', 'Accepted', ?, ?, ?)";
+                + "VALUES (2, 2, ?, ?, ?)";
         if (amount.doubleValue() > accountDao.getBalance(userFrom).doubleValue()) {
             throw new Exception("Transfer failed due to a lack of funds");
         } else {

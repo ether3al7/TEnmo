@@ -9,7 +9,7 @@ public interface AccountDao {
     Account getByAccountId(int accountId);
     BigDecimal getBalance(String username);
     BigDecimal getBalance(int userId); //added this for JdbcTransferDao sendTransfer method
-    Account updateAccount(Account account);
+    Account updateAccount(int id, Account account);
 
     int getAccountId(int userId);
 }

@@ -71,9 +71,9 @@ public class JdbcAccountDao implements AccountDao {
     }
 
     @Override
-    public Account updateAccount(Account account) {
+    public Account updateAccount(int id, Account account) {
         String sql = "UPDATE account SET balance = ? WHERE account_id = ?;";
-        jdbcTemplate.update(sql,account.getBalance(),account.getAccountId());
+        jdbcTemplate.update(sql, account.getBalance(), id);
         return account;
     }
 
