@@ -93,11 +93,27 @@ public class App {
 	private void viewCurrentBalance() {
 
         BigDecimal balance = accountService.getBalance(currentUser);
-        System.out.println("/n Your current account balance is: $" + balance + "/n");
+        System.out.println("\n Your current account balance is: $" + balance + "\n");
 	}
 
 	private void viewTransferHistory() {
-		
+
+        Transfer[]transfers =  transferService.getAllTransfers(accountService.getAccountId(currentUser.getUser().getId()));
+		User[]users = transferService.getAllUsers();
+        String username = null;
+
+        System.out.println("-------------------------------------------\n" +
+                "Transfers\n" +
+                "ID          From/To                 Amount\n" +
+                "-------------------------------------------");
+        for (Transfer transfer : transfers) {
+            if (users != null) {
+                for (User user: users) {
+                    if (accountService.getAccountId(user.getId()).equals(transfer.getAccountTo()) && !currentUser.getUser().getId().equals(user.getId()));
+                    username = user.getUsername();
+                }
+            }
+        }
 	}
 
 	private void viewPendingRequests() {
@@ -115,7 +131,7 @@ public class App {
                     "ID          Name\n" +
                     "-------------------------------------------");
             for (User user : users) {
-                System.out.println(accountService.getByAccountId(user.getId()) + "   " + accountService.getUsername(user.getId()));
+                System.out.println(accountService.getByUserId(currentUser.getUser().getId()) + "   " + accountService.getUsername(user.getId()));
             }
             System.out.println("-------------------------------------------");
         }
@@ -123,10 +139,12 @@ public class App {
         ConsoleService console = new ConsoleService();
         // need Integer over int to use equals method in User class
         Integer userTo = console.promptForInt("Enter ID of user you are sending to (0 to cancel):");
-        Integer accountFrom =  accountService.getByAccountId(currentUser.getUser().getId()).getAccountId();
+        Integer accountFrom =  accountService.getAccountId(currentUser.getUser().getId());
 
         if (accountFrom.equals(userTo)) {
-             userTo = console.promptForInt("Cannot send money to self");
+           //  System.out.println("cannot send money to self");
+           //  userTo = console.promptForInt("Cannot send money to self");
+
         } else {
             BigDecimal amountToSend = console.promptForBigDecimal("Enter amount:");
 
@@ -138,11 +156,14 @@ public class App {
                 transfer.setTransferStatusId(2);
                 transfer.setAccountFrom(accountFrom);
                 transfer.setAccountTo(userTo);
+                transfer.setAmount(amountToSend);
 
                 transferService.addTransfer(transfer);
                 BigDecimal remainingBalance = accountService.getBalance(currentUser);
                 System.out.println("Remaining Balance: " + remainingBalance);
 
+            } else { // can clean this up
+                System.out.println("Not enough money in account or money entered must be greater than 0");
             }
         }
 	}

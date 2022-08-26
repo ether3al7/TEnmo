@@ -6,10 +6,7 @@ import com.tenmo.dao.UserDao;
 import com.tenmo.model.Account;
 import com.tenmo.model.Transfer;
 import com.tenmo.model.User;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 import java.security.Principal;
@@ -17,7 +14,7 @@ import java.util.List;
 
 @RestController
 //@PreAuthorize("isAuthenticated()")
-//@RequestMapping(path="")
+//@RequestMapping
 public class ServerController {
     private AccountDao accountDao;
     private TransferDao transferDao;
@@ -28,18 +25,26 @@ public class ServerController {
         this.transferDao = transferDao;
         this.userDao = userDao;
     }
-
+     //Account
     @GetMapping(path= "/account/balance/{id}")
-    public BigDecimal getAccountBalance(@PathVariable int id) {
-        return accountDao.getBalance(id);
+    public BigDecimal getAccountBalance(@PathVariable int userId) {
+        return accountDao.getBalance(userId);
     }
 
+    @GetMapping(path= "/account/{id}")
+    public Account getByAccountId(@PathVariable int id) {
+        return accountDao.getByAccountId(id);
+    }
+
+    //User
     @GetMapping(path="/user")
     public List<User> getAllUsers (){
         return userDao.findAll();
     }
 
-    //need to create a transfer
+    @GetMapping(path= "/user/{id}")
+    public Integer getAccountId(@PathVariable int userId){return accountDao.getAccountId(userId); }
+
     @PostMapping(path="")
     public int createTransfer(Transfer transfer){
         return transferDao.createTransfer(transfer);
