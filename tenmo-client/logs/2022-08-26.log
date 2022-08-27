@@ -1,0 +1,46 @@
+2022-08-26T14:09:44.3234324 404 Not Found: [<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
+<html><head>
+<title>404 Not Found</title>
+</head><body>
+<h1>Not Found</h1>
+<p>The requested URL was not found on this server.</p>
+</body></html>
+]
+2022-08-26T14:14:52.4982485 404 : [{"timestamp":"2022-08-26T18:14:52.406+00:00","status":404,"error":"Not Found","message":"No message available","path":"/url/endpoint1001"}]
+2022-08-26T14:23:55.2295528 I/O error on POST request for "http://localhost:8080/login": Connection refused: connect; nested exception is java.net.ConnectException: Connection refused: connect
+2022-08-26T14:24:05.9646149 I/O error on POST request for "http://localhost:8080/register": Connection refused: connect; nested exception is java.net.ConnectException: Connection refused: connect
+2022-08-26T14:24:54.1821433 500 : [{"timestamp":"2022-08-26T18:24:54.119+00:00","status":500,"error":"Internal Server Error","message":"Invalid column name; nested exception is java.sql.SQLException: Invalid column name","path":"/account/balance/1001"}]
+2022-08-26T14:27:08.1020711 404 : [{"timestamp":"2022-08-26T18:27:08.046+00:00","status":404,"error":"Not Found","message":"No message available","path":"/account/balance/1001"}]
+2022-08-26T14:33:27.7940519 404 : [{"timestamp":"2022-08-26T18:33:27.731+00:00","status":404,"error":"Not Found","message":"No message available","path":"/account/balance/1001"}]
+2022-08-26T14:38:07.5502875 404 : [{"timestamp":"2022-08-26T18:38:07.425+00:00","status":404,"error":"Not Found","message":"No message available","path":"/account/balance/1001"}]
+2022-08-26T16:18:33.0492774 405 : [{"timestamp":"2022-08-26T20:18:32.971+00:00","status":405,"error":"Method Not Allowed","message":"Request method 'GET' not supported","path":"/"}]
+2022-08-26T16:18:40.9159638 404 : [{"timestamp":"2022-08-26T20:18:40.915+00:00","status":404,"error":"Not Found","message":"No message available","path":"/1001"}]
+2022-08-26T16:22:01.5161326 405 : [{"timestamp":"2022-08-26T20:22:01.438+00:00","status":405,"error":"Method Not Allowed","message":"Request method 'GET' not supported","path":"/"}]
+2022-08-26T16:22:04.0155435 404 : [{"timestamp":"2022-08-26T20:22:03.999+00:00","status":404,"error":"Not Found","message":"No message available","path":"/1001"}]
+2022-08-26T16:28:48.5859453 405 : [{"timestamp":"2022-08-26T20:28:48.507+00:00","status":405,"error":"Method Not Allowed","message":"Request method 'GET' not supported","path":"/"}]
+2022-08-26T16:28:51.0384889 404 : [{"timestamp":"2022-08-26T20:28:51.038+00:00","status":404,"error":"Not Found","message":"No message available","path":"/user/1001"}]
+2022-08-26T16:31:15.6950852 405 : [{"timestamp":"2022-08-26T20:31:15.648+00:00","status":405,"error":"Method Not Allowed","message":"Request method 'GET' not supported","path":"/"}]
+2022-08-26T16:31:17.9757958 404 : [{"timestamp":"2022-08-26T20:31:17.960+00:00","status":404,"error":"Not Found","message":"No message available","path":"/user/1001"}]
+2022-08-26T16:52:29.4878395 405 : [{"timestamp":"2022-08-26T20:52:29.409+00:00","status":405,"error":"Method Not Allowed","message":"Request method 'GET' not supported","path":"/"}]
+2022-08-26T16:52:31.3936372 404 : [{"timestamp":"2022-08-26T20:52:31.393+00:00","status":404,"error":"Not Found","message":"No message available","path":"/user/1001"}]
+2022-08-26T17:01:44.6919516 405 : [{"timestamp":"2022-08-26T21:01:44.613+00:00","status":405,"error":"Method Not Allowed","message":"Request method 'GET' not supported","path":"/"}]
+2022-08-26T17:01:47.9568055 404 : [{"timestamp":"2022-08-26T21:01:47.956+00:00","status":404,"error":"Not Found","message":"No message available","path":"/user/1002"}]
+2022-08-26T17:19:18.8609597 500 : [{"timestamp":"2022-08-26T21:19:18.814+00:00","status":500,"error":"Internal Server Error","message":"Missing URI template variable 'userId' for method parameter of type int","path":"/account/balance/1001"}]
+2022-08-26T17:20:16.8304991 500 : [{"timestamp":"2022-08-26T21:20:16.768+00:00","status":500,"error":"Internal Server Error","message":"Missing URI template variable 'userId' for method parameter of type int","path":"/account/balance/1001"}]
+2022-08-26T17:21:19.7508899 500 : [{"timestamp":"2022-08-26T21:21:19.688+00:00","status":500,"error":"Internal Server Error","message":"Missing URI template variable 'userId' for method parameter of type int","path":"/account/balance/1002"}]
+2022-08-26T17:22:26.8368515 500 : [{"timestamp":"2022-08-26T21:22:26.222+00:00","status":500,"error":"Internal Server Error","message":"Missing URI template variable 'userId' for method parameter of type int","path":"/account/balance/1001"}]
+2022-08-26T17:29:24.4973703 500 : [{"timestamp":"2022-08-26T21:29:24.426+00:00","status":500,"error":"Internal Server Error","message":"Missing URI template variable 'userId' for method parameter of type int","path":"/account/balance/1001"}]
+2022-08-26T17:44:03.2938607 500 : [{"timestamp":"2022-08-26T21:44:03.246+00:00","status":500,"error":"Internal Server Error","message":"Missing URI template variable 'userId' for method parameter of type int","path":"/account/balance/1001"}]
+2022-08-26T17:49:36.6469449 500 : [{"timestamp":"2022-08-26T21:49:36.537+00:00","status":500,"error":"Internal Server Error","message":"Missing URI template variable 'userId' for method parameter of type int","path":"/account/balance/1001"}]
+2022-08-26T17:51:20.0101768 I/O error on POST request for "http://localhost:8080/login": Connection refused: connect; nested exception is java.net.ConnectException: Connection refused: connect
+2022-08-26T17:51:31.7834748 I/O error on POST request for "http://localhost:8080/login": Connection refused: connect; nested exception is java.net.ConnectException: Connection refused: connect
+2022-08-26T17:52:31.5820078 405 : [{"timestamp":"2022-08-26T21:52:31.535+00:00","status":405,"error":"Method Not Allowed","message":"Request method 'GET' not supported","path":"/"}]
+2022-08-26T17:53:40.4507524 500 : [{"timestamp":"2022-08-26T21:53:40.450+00:00","status":500,"error":"Internal Server Error","message":"PreparedStatementCallback; bad SQL grammar [INSERT INTO transfer (transfer_type_id, transfer_status... (493 bytes)]
+2022-08-26T18:09:11.915801 405 : [{"timestamp":"2022-08-26T22:09:10.089+00:00","status":405,"error":"Method Not Allowed","message":"Request method 'GET' not supported","path":"/"}]
+2022-08-26T18:09:27.4701354 500 : [{"timestamp":"2022-08-26T22:09:27.438+00:00","status":500,"error":"Internal Server Error","message":"PreparedStatementCallback; bad SQL grammar [INSERT INTO transfer (transfer_type_id, transfer_status... (493 bytes)]
+2022-08-26T18:10:13.7423026 405 : [{"timestamp":"2022-08-26T22:10:13.611+00:00","status":405,"error":"Method Not Allowed","message":"Request method 'GET' not supported","path":"/"}]
+2022-08-26T18:10:18.9054244 500 : [{"timestamp":"2022-08-26T22:10:18.894+00:00","status":500,"error":"Internal Server Error","message":"PreparedStatementCallback; bad SQL grammar [INSERT INTO transfer (transfer_type_id, transfer_status... (493 bytes)]
+2022-08-26T18:16:01.0049335 404 : [{"timestamp":"2022-08-26T22:16:00.898+00:00","status":404,"error":"Not Found","message":"No message available","path":"/1001"}]
+2022-08-26T18:16:01.1744796 404 : [{"timestamp":"2022-08-26T22:16:01.169+00:00","status":404,"error":"Not Found","message":"No message available","path":"/username/1001"}]
+2022-08-26T18:16:01.1924313 404 : [{"timestamp":"2022-08-26T22:16:01.187+00:00","status":404,"error":"Not Found","message":"No message available","path":"/1001"}]
+2022-08-26T18:16:01.2203559 404 : [{"timestamp":"2022-08-26T22:16:01.216+00:00","status":404,"error":"Not Found","message":"No message available","path":"/username/1002"}]
