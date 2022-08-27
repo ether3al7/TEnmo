@@ -86,7 +86,7 @@ public class AccountService {
         boolean success = false;
         HttpEntity<Account> entity = makeAccountEntity(updatedAccount);
         try {
-            restTemplate.put(API_BASE_URL + updatedAccount.getAccountId(), entity);
+            restTemplate.put(API_BASE_URL + "account/" + updatedAccount.getAccountId(), entity);
             success = true;
 
         } catch (RestClientResponseException | ResourceAccessException e) {
@@ -111,7 +111,7 @@ public class AccountService {
     private HttpEntity<Account> makeAccountEntity(Account account) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-      //  headers.setBearerAuth(token);
+//        headers.setBearerAuth(authenticatedUser.getToken());
         return new HttpEntity<>(account, headers);
     }
 

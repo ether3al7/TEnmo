@@ -31,6 +31,11 @@ public class ServerController {
         return accountDao.getBalance(id);
     }
 
+    @GetMapping(path= "/{id}")
+    public Account getByUserId(@PathVariable int id) {
+        return accountDao.findByUserId(id);
+    }
+
     @GetMapping(path= "/account/{id}")
     public Account getByAccountId(@PathVariable int id) {
         return accountDao.getByAccountId(id);
@@ -45,7 +50,7 @@ public class ServerController {
     @GetMapping(path= "/user/{id}")
     public Integer getAccountId(@PathVariable int id){return accountDao.getAccountId(id); }
 
-    @PostMapping(path="")
+    @PostMapping(path="/transfer")
     public int createTransfer(Transfer transfer){
         return transferDao.createTransfer(transfer);
     }
@@ -56,12 +61,12 @@ public class ServerController {
     }
 
     @GetMapping(path="/transfer/history/{id}")
-    public Transfer getTransferById(@PathVariable int transferId) {
-        return transferDao.getTransferById(transferId);
+    public Transfer getTransferById(@PathVariable int id) {
+        return transferDao.getTransferById(id);
     }
 
-    public Account updateAccount(Account account) {
-        return accountDao.updateAccount(account);
+    @PutMapping(path="/account/{id}")
+    public Account updateAccount(@PathVariable int id, Account account) {
+        return accountDao.updateAccount(id, account);
     }
-
 }
