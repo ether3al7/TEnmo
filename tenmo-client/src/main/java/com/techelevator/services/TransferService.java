@@ -21,7 +21,7 @@ public class TransferService {
     public Transfer[] getAllTransfers(int id) {
         Transfer[] transfers = null;
         try {
-            ResponseEntity<Transfer[]> response = restTemplate.exchange(API_BASE_URL + id, HttpMethod.GET, makeAuthEntity(),
+            ResponseEntity<Transfer[]> response = restTemplate.exchange(API_BASE_URL + "/transfer/history/" + id, HttpMethod.GET, makeAuthEntity(),
                     Transfer[].class);
             transfers = response.getBody();
         } catch (RestClientResponseException | ResourceAccessException e) {
@@ -33,7 +33,7 @@ public class TransferService {
     public Transfer getTransferDetails(int id) {
         Transfer transfer = null;
         try {
-            ResponseEntity<Transfer> response = restTemplate.exchange(API_BASE_URL + id, HttpMethod.GET, makeAuthEntity(),
+            ResponseEntity<Transfer> response = restTemplate.exchange(API_BASE_URL + "/transfer/history/" + id, HttpMethod.GET, makeAuthEntity(),
                     Transfer.class);
             transfer = response.getBody();
         } catch (RestClientResponseException | ResourceAccessException e) {
@@ -43,10 +43,13 @@ public class TransferService {
         return transfer;
     }
 
-    public boolean addTransfer(Transfer newTransfer) {
+    public boolean addTransfer(Transfer transfer) {
         boolean success = false;
         try {
-            restTemplate.postForObject(API_BASE_URL, makeTransferEntity(newTransfer), Transfer.class);
+//            success = restTemplate.exchange(API_BASE_URL + "/transfer/" + transfer.getAccountFrom() + "/"
+//                    + transfer.getAccountTo(), HttpMethod.POST,makeTransferEntity(transfer),Boolean.class).getBody();
+            restTemplate.postForObject(API_BASE_URL + "/transfer/" + transfer.getAccountFrom() + "/" + transfer.getAccountTo(),
+                    makeTransferEntity(transfer), Transfer.class);
             success = true;
         } catch (RestClientResponseException | ResourceAccessException e) {
             BasicLogger.log(e.getMessage());

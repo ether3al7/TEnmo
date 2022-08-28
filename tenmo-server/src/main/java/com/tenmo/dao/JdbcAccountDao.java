@@ -18,10 +18,10 @@ public class JdbcAccountDao implements AccountDao {
     }
 
     @Override
-    public Account findByUserId(int userId) {
+    public Account findByUserId(int id) {
         Account account = null;
         String sql = "SELECT account_id, user_id, balance FROM account WHERE user_id = ?;";
-        SqlRowSet results = jdbcTemplate.queryForRowSet(sql, userId);
+        SqlRowSet results = jdbcTemplate.queryForRowSet(sql, id);
         if (results.next()) {
             account = mapRowToAccount(results);
         } else {
@@ -56,7 +56,7 @@ public class JdbcAccountDao implements AccountDao {
 
     @Override
     public BigDecimal getBalance(int userId) { //added this method for if condition in sendTransfer
-        Account account = new Account();
+       // Account account = new Account(); <--why do we need this?
         String sql = "SELECT balance FROM account WHERE user_id = ?;";
         //        SqlRowSet results = jdbcTemplate.queryForRowSet(sql, userId);
 //        if (results.next()) {
@@ -65,13 +65,13 @@ public class JdbcAccountDao implements AccountDao {
         return jdbcTemplate.queryForObject(sql,BigDecimal.class, userId);
     }
 
-    public int getAccountId(int userId) {
+    public int getAccountId(int id) {
         String sql = "SELECT account_id FROM account WHERE user_id = ?;";
-        return jdbcTemplate.queryForObject(sql,int.class,userId);
+        return jdbcTemplate.queryForObject(sql,int.class,id);
     }
 
     @Override
-    public Account updateAccount(int id, Account account) {
+    public Account updateAccountBalance(int id, Account account) {
         String sql = "UPDATE account SET balance = ? WHERE account_id = ?;";
         jdbcTemplate.update(sql, account.getBalance(), id);
         return account;

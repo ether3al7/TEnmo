@@ -3,6 +3,7 @@ package com.techelevator.services;
 import com.techelevator.model.Account;
 import com.techelevator.model.AuthenticatedUser;
 import com.techelevator.util.BasicLogger;
+import org.apiguardian.api.API;
 import org.springframework.http.*;
 import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestClientResponseException;
@@ -43,12 +44,13 @@ public class AccountService {
         return account;
     }
 
-    public Integer getAccountId(int userId) {
+    public Integer getAccountId(int id) {
         Integer accountId = null;
         try {
-            ResponseEntity<Integer> response = restTemplate.exchange(API_BASE_URL + "user/" + userId, HttpMethod.GET,
-                    makeAuthEntity(), Integer.class);
-            accountId = response.getBody();
+            accountId = restTemplate.exchange(API_BASE_URL + "user/" + id, HttpMethod.GET, makeAuthEntity(), Integer.class).getBody();
+//            ResponseEntity<Integer> response = restTemplate.exchange(API_BASE_URL + "user/" + userId, HttpMethod.GET,
+//                    makeAuthEntity(), Integer.class);
+//            accountId = response.getBody();
 
         } catch (RestClientResponseException | ResourceAccessException e) {
             BasicLogger.log(e.getMessage());
@@ -56,12 +58,24 @@ public class AccountService {
         return accountId;
     }
 
+//    public Integer getUserId(int id) {
+//        Integer userId = null;
+//        try {
+//            userId = restTemplate.exchange(API_BASE_URL + "user/" + id, HttpMethod.GET, makeAuthEntity(), Integer.class).getBody();
+//
+//        } catch (RestClientResponseException | ResourceAccessException e) {
+//            BasicLogger.log(e.getMessage());
+//        }
+//        return userId;
+//    }
+
     public Account getByUserId(int id) {
         Account account = null;
         try {
             ResponseEntity<Account> response = restTemplate.exchange(API_BASE_URL + id, HttpMethod.GET,
                     makeAuthEntity(), Account.class);
             account = response.getBody();
+
         } catch (RestClientResponseException | ResourceAccessException e) {
             BasicLogger.log(e.getMessage());
         }
@@ -73,9 +87,7 @@ public class AccountService {
         try {
             balance = restTemplate.exchange(API_BASE_URL + "account/balance/" + authenticatedUser.getUser().getId(),
                     HttpMethod.GET, makeAuthEntity(), BigDecimal.class).getBody();
-//            ResponseEntity<BigDecimal> response = restTemplate.exchange(API_BASE_URL + "account/balance/" + authenticatedUser.getUser().getId()
-//            , HttpMethod.GET, makeAuthEntity(), BigDecimal.class);
-//            balance = response.getBody();
+
         } catch (RestClientResponseException |ResourceAccessException e) {
             BasicLogger.log(e.getMessage());
         }
@@ -86,7 +98,7 @@ public class AccountService {
         boolean success = false;
         HttpEntity<Account> entity = makeAccountEntity(updatedAccount);
         try {
-            restTemplate.put(API_BASE_URL + "account/" + updatedAccount.getAccountId(), entity);
+            restTemplate.put(API_BASE_URL + "account/balance/" + updatedAccount.getAccountId(), entity);
             success = true;
 
         } catch (RestClientResponseException | ResourceAccessException e) {

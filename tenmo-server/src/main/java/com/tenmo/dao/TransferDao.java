@@ -10,7 +10,7 @@ import java.util.List;
 public interface TransferDao {
     public List<Transfer> getTransferList(int userId);
     public Transfer getTransferById(int transactionId);
-    public boolean sendTransfer(int userFrom, int userTo, BigDecimal amount)  throws Exception;
+    boolean sendTransfer(Transfer transfer, int userFrom, int userTo)  throws Exception;
 
     public int createTransfer(@Valid @RequestBody Transfer transfer); //might need this
 //    public String requestTransfer(int userFrom, int userTo, BigDecimal amount);

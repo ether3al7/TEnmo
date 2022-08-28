@@ -121,9 +121,6 @@ public class App {
 	private void sendBucks() {
 		User[]users = transferService.getAllUsers();
         Transfer transfer = new Transfer();
-        Account sender = accountService.getByUserId(currentUser.getUser().getId());         // For handling updated sender balance
-        System.out.println(currentUser.getUser().getId());                                  // 1001
-        Account receiver = null;                                                            // For handling updated receiver balance
 
         if (users != null) {
             System.out.println("-------------------------------------------\n" +
@@ -131,45 +128,43 @@ public class App {
                     "ID          Name\n" +
                     "-------------------------------------------");
             for (User user : users) {
-//                System.out.println(accountService.getByUserId(currentUser.getUser().getId()) + "   " + accountService.getUsername(user.getId()));
                 System.out.println(user.getId() + "    " + user.getUsername());
             }
             System.out.println("-------------------------------------------");
         }
-        //using ConsoleService over Scanner tool
         ConsoleService console = new ConsoleService();
         // need Integer over int to use equals method in User class
         Integer userTo = console.promptForInt("Enter ID of user you are sending to (0 to cancel):");
-        Integer accountFrom =  accountService.getAccountId(currentUser.getUser().getId());
+        Integer userFrom =  accountService.getByUserId(currentUser.getUser().getId()).getUserId();
 
-        while (accountFrom.equals(userTo)) {
-//             System.out.println("cannot send money to self");
-             userTo = console.promptForInt("Cannot send money to self");
+        System.out.println("userTo id = " + userTo + " Balance = " + accountService.getByUserId(userTo).getBalance());
+        System.out.println("userFrom id = " + userFrom + " Balance = " + accountService.getByUserId(userFrom).getBalance());
 
-        }
-            receiver = accountService.getByAccountId(userTo);                           // should be userTo, not accountFrom... XD
+//        while (accountFrom.equals(userTo)) {
+//            userTo = console.promptForInt("Cannot send money to self");
+//        }
+//        will come back to validate above later
+
             BigDecimal amountToSend = console.promptForBigDecimal("Enter amount:");
-
-        //  if (amountToSend.intValue() <= accountService.getBalance(currentUser).intValue())
             if (amountToSend.compareTo(accountService.getBalance(currentUser)) <= 0 && amountToSend.intValue() > 0) {
                 // -1, 0, 1 <-- Less than, equal to, greater than
-                //at this point, everything is valid, now we need to create transfer to store in table
+                //at this point, everything is valid
                 transfer.setTransferTypeId(2); //referred to tenmo.sql for numerical value
                 transfer.setTransferStatusId(2);
-                transfer.setAccountFrom(accountFrom);
+                transfer.setAccountFrom(userFrom);
                 transfer.setAccountTo(userTo);
                 transfer.setAmount(amountToSend);
 
-                transferService.addTransfer(transfer);
-//                BigDecimal remainingBalance = accountService.getBalance(currentUser);
-                BigDecimal remainingBalance = accountService.getBalance(currentUser).subtract(amountToSend);
-                sender.setBalance(accountService.getBalance(currentUser).subtract(amountToSend));        // sender's new balance
-                receiver.setBalance(accountService.getBalance(currentUser).add(amountToSend));           // receiver's new balance
-                System.out.println("Object's balance: " + sender.getBalance() + "  Database's balance: " + accountService.getBalance(currentUser));
-                accountService.update(sender);                                                           // write to database
-                System.out.println("Object's balance: " + sender.getBalance() + "  Database's balance: " + accountService.getBalance(currentUser));
-                accountService.update(receiver);                                                         // write to database
+                transferService.addTransfer(transfer); //<-- causing 404 error here,
+                // fix in serverController/JdbcTransferDao/tenmo-client/TransferService
+                //method addTransfer in transferService may be pointing to null
 
+                BigDecimal remainingBalance = accountService.getBalance(currentUser).subtract(amountToSend);
+                System.out.println("remaining balance @ line 162 = " + remainingBalance);
+                accountService.getByUserId(userFrom).setBalance(remainingBalance);
+//             if(accountService.update(accountService.getByUserId(currentUser.getUser().getId()))){
+//                 System.out.println("true");
+//             } ^testing above
                 System.out.println("Remaining Balance: " + accountService.getBalance(currentUser));
 
             } else { // can clean this up

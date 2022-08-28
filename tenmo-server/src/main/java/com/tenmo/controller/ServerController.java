@@ -27,11 +27,11 @@ public class ServerController {
     }
      //Account
     @GetMapping(path= "/account/balance/{id}")
-    public BigDecimal getAccountBalance(@PathVariable int id) {
+    public BigDecimal getBalance(@PathVariable int id) {
         return accountDao.getBalance(id);
     }
 
-    @GetMapping(path= "/{id}")
+    @GetMapping(path= "/user/{id}")
     public Account getByUserId(@PathVariable int id) {
         return accountDao.findByUserId(id);
     }
@@ -50,23 +50,23 @@ public class ServerController {
     @GetMapping(path= "/user/{id}")
     public Integer getAccountId(@PathVariable int id){return accountDao.getAccountId(id); }
 
-    @PostMapping(path="/transfer")
-    public int createTransfer(Transfer transfer){
-        return transferDao.createTransfer(transfer);
-    }
-
-    @GetMapping(path="/transfer")
-    public List<Transfer> getAllTransfers(Principal principal){
-        return transferDao.getTransferList(userDao.findIdByUsername(principal.getName()));
+    @PostMapping(path="/transfer/{userFrom}/{userTo}")
+    public boolean createTransfer(@RequestBody Transfer transfer, @PathVariable int userFrom, @PathVariable int userTo) throws Exception {
+        return transferDao.sendTransfer(transfer,userFrom,userTo);
     }
 
     @GetMapping(path="/transfer/history/{id}")
+    public List<Transfer> getAllTransfers(@PathVariable int id){
+        return transferDao.getTransferList(id);
+    }
+
+    @GetMapping(path="/transfer/history/user/{id}")
     public Transfer getTransferById(@PathVariable int id) {
         return transferDao.getTransferById(id);
     }
 
     @PutMapping(path="/account/{id}")
     public Account updateAccount(@PathVariable int id, Account account) {
-        return accountDao.updateAccount(id, account);
+        return accountDao.updateAccountBalance(id, account);
     }
 }

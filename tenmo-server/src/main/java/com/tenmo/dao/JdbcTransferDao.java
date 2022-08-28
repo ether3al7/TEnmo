@@ -7,7 +7,6 @@ import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Component;
 
 import javax.sql.DataSource;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,19 +46,19 @@ public class JdbcTransferDao implements TransferDao {
     }
 
     @Override
-    public boolean sendTransfer(int userFrom, int userTo, BigDecimal amount)  throws Exception {            // maybe a Transfer object instead
+    public boolean sendTransfer(Transfer transfer, int userFrom, int userTo)  throws Exception {
         boolean success = false;
         String sql = "INSERT INTO transfer (transfer_type_id, transfer_status_id, account_from, account_to, amount) "
-                + "VALUES (2, 2, ?, ?, ?)";
-        if (amount.doubleValue() > accountDao.getBalance(userFrom).doubleValue()) {
+                + "VALUES (?, ?, ?, ?, ?)";
+        if (transfer.getAmount().doubleValue() > accountDao.getBalance(userFrom).doubleValue()) {
             throw new Exception("Transfer failed due to a lack of funds");
         } else {
-            jdbcTemplate.update(sql, userFrom, userTo, amount);
+            jdbcTemplate.update(sql,transfer.getTransferID(),transfer.getTransferStatusId(), userFrom, userTo, transfer.getAmount());
 
             String addSql = "UPDATE account SET balance = balance + ? WHERE account_id = ?";
-            jdbcTemplate.update(addSql, amount, userTo);
+            jdbcTemplate.update(addSql, transfer.getAmount(), userTo);
             String subtractSql = "UPDATE account SET balance = balance - ? WHERE account_id = ?";
-            jdbcTemplate.update(subtractSql, amount, userFrom);
+            jdbcTemplate.update(subtractSql, transfer.getAmount(), userFrom);
             success = true;
         }
         return success;                     // success is always true? CHECK
@@ -67,7 +66,6 @@ public class JdbcTransferDao implements TransferDao {
 
     @Override
     public int createTransfer(Transfer transfer) {
-
         String sql = "INSERT INTO transfer (transfer_type_id, transfer_status_id, account_from, account_to,amount) "
         + "VALUES (?, ?, ?, ?, ?) RETURNING transfer_id";
 
