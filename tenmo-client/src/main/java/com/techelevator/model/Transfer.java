@@ -3,7 +3,7 @@ package com.techelevator.model;
 import java.math.BigDecimal;
 
 public class Transfer {
-    private int transferId;
+    private int transferID;
     private int transferTypeId;
     private int transferStatusId;
     private int accountFrom;
@@ -15,7 +15,7 @@ public class Transfer {
     private String userTo;
 
     public Transfer(int transferId, int transferTypeId, int transferStatusId, int accountFrom, int accountTo, BigDecimal amount, String transferType, String transferStatus, String userFrom, String userTo) {
-        this.transferId = transferId;
+        this.transferID = transferId;
         this.transferTypeId = transferTypeId;
         this.transferStatusId = transferStatusId;
         this.accountFrom = accountFrom;
@@ -30,12 +30,12 @@ public class Transfer {
     public Transfer() {
     }
 
-    public int getTransferId() {
-        return transferId;
+    public int getTransferID() {
+        return transferID;
     }
 
-    public void setTransferId(int transferId) {
-        this.transferId = transferId;
+    public void setTransferID(int transferId) {
+        this.transferID = transferId;
     }
 
     public int getTransferTypeId() {

@@ -104,23 +104,45 @@ public class App {
                 "Transfers\n" +
                 "ID          From/To                 Amount\n" +
                 "-------------------------------------------");
+
         for (Transfer transfer : transfers) {
-      //      System.out.println(transfer.getTransferId() + "          " + transfer.getAccountFrom() + "/" + transfer.getAccountTo() + "                " + transfer.getAmount());
-            if (users != null) {
-                for (User user: users) { //looping thru users to see if they were involved in transfer w/ current user
 
-                    if (accountService.getAccountId(user.getId()).equals(transfer.getAccountTo()) && !currentUser.getUser().getId().equals(user.getId())) {
-                        username = "To: " + user.getUsername();
-                        //we'll use above to print userTo name
+            if (accountService.getAccountId(currentUser.getUser().getId()).equals(transfer.getAccountFrom())) {
+                for (User user : users) {
+                    if (accountService.getAccountId(user.getId()).equals(transfer.getAccountTo())) {
+                        username = user.getUsername();
                     }
-
-                     if (accountService.getAccountId(user.getId()).equals(transfer.getAccountFrom())){
-                         username = "From: " + user.getUsername();
-                         //we'll use above to print userFrom name
-                     }
-                    System.out.println(transfer.getTransferId() + "          " + username + "                " + transfer.getAmount());
                 }
+                System.out.println(transfer.getTransferID() + "          To: " + username + "                " + transfer.getAmount());
             }
+            else if (accountService.getAccountId(currentUser.getUser().getId()).equals(transfer.getAccountTo())) {
+                for (User user : users) {
+                    if (accountService.getAccountId(user.getId()).equals(transfer.getAccountFrom())) {
+                        username = user.getUsername();
+                    }
+                }
+                System.out.println(transfer.getTransferID() + "          From: " + username + "                " + transfer.getAmount());
+            }
+
+
+//            if (users != null) {
+//                for (User user: users) { //looping thru users to see if they were involved in transfer w/ current user
+//
+//                    if (accountService.getAccountId(user.getId()).equals(transfer.getAccountTo()) && !currentUser.getUser().getId().equals(user.getId())) {
+//                        username = "To: " + user.getUsername();
+//                        //we'll use above to print userTo name
+//                    }
+//
+//                     if (accountService.getAccountId(user.getId()).equals(transfer.getAccountFrom())){
+//                         username = "From: " + user.getUsername();
+//                         //we'll use above to print userFrom name
+//                     }
+//                    System.out.println(transfer.getTransferId() + "          " + username + "                " + transfer.getAmount());
+//                }
+//            }
+
+
+
         }
 	}
 
