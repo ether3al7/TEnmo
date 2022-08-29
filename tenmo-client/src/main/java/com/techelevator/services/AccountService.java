@@ -35,7 +35,7 @@ public class AccountService {
     public Account getByAccountId(int id) {
         Account account = null;
         try {
-            ResponseEntity<Account> response = restTemplate.exchange(API_BASE_URL + id, HttpMethod.GET,
+            ResponseEntity<Account> response = restTemplate.exchange(API_BASE_URL + "account/" + id, HttpMethod.GET,
                     makeAuthEntity(), Account.class);
             account = response.getBody();
         } catch (RestClientResponseException | ResourceAccessException e) {
@@ -72,7 +72,7 @@ public class AccountService {
     public Account getByUserId(int id) {
         Account account = null;
         try {
-            ResponseEntity<Account> response = restTemplate.exchange(API_BASE_URL + id, HttpMethod.GET,
+            ResponseEntity<Account> response = restTemplate.exchange(API_BASE_URL + "user/" + id, HttpMethod.GET,
                     makeAuthEntity(), Account.class);
             account = response.getBody();
 

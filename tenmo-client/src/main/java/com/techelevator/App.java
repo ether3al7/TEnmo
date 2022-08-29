@@ -135,10 +135,11 @@ public class App {
         ConsoleService console = new ConsoleService();
         // need Integer over int to use equals method in User class
         Integer userTo = console.promptForInt("Enter ID of user you are sending to (0 to cancel):");
+       // System.out.println(currentUser.getUser().getId()); //test
         Integer userFrom =  accountService.getByUserId(currentUser.getUser().getId()).getUserId();
 
-        System.out.println("userTo id = " + userTo + " Balance = " + accountService.getByUserId(userTo).getBalance());
-        System.out.println("userFrom id = " + userFrom + " Balance = " + accountService.getByUserId(userFrom).getBalance());
+        System.out.println("userTo userId = " + userTo + " accountId = " + accountService.getByUserId(userTo).getAccountId() + " Balance = " + accountService.getByUserId(userTo).getBalance());
+        System.out.println("userFrom userId = " + userFrom + " accountId = " + accountService.getByUserId(userFrom).getAccountId() + " Balance = " + accountService.getByUserId(userFrom).getBalance());
 
 //        while (accountFrom.equals(userTo)) {
 //            userTo = console.promptForInt("Cannot send money to self");
@@ -149,15 +150,15 @@ public class App {
             if (amountToSend.compareTo(accountService.getBalance(currentUser)) <= 0 && amountToSend.intValue() > 0) {
                 // -1, 0, 1 <-- Less than, equal to, greater than
                 //at this point, everything is valid
-                transfer.setTransferTypeId(2); //referred to tenmo.sql for numerical value
+                transfer.setTransferTypeId(2); //refer to tenmo.sql for numerical value
                 transfer.setTransferStatusId(2);
-                transfer.setAccountFrom(userFrom);
-                transfer.setAccountTo(userTo);
+                transfer.setAccountFrom(accountService.getByUserId(userFrom).getAccountId());
+                transfer.setAccountTo(accountService.getByUserId(userTo).getAccountId());
+                //these 2 lines above need account id, was passing thru user id
                 transfer.setAmount(amountToSend);
 
-                transferService.addTransfer(transfer); //<-- causing 404 error here,
-                // fix in serverController/JdbcTransferDao/tenmo-client/TransferService
-                //method addTransfer in transferService may be pointing to null
+                transferService.addTransfer(transfer); //<-- causing 500 error here,
+                //we are using user id for transfer
 
                 BigDecimal remainingBalance = accountService.getBalance(currentUser).subtract(amountToSend);
                 System.out.println("remaining balance @ line 162 = " + remainingBalance);

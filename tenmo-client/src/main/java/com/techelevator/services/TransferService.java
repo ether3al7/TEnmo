@@ -46,11 +46,11 @@ public class TransferService {
     public boolean addTransfer(Transfer transfer) {
         boolean success = false;
         try {
-//            success = restTemplate.exchange(API_BASE_URL + "/transfer/" + transfer.getAccountFrom() + "/"
-//                    + transfer.getAccountTo(), HttpMethod.POST,makeTransferEntity(transfer),Boolean.class).getBody();
-            restTemplate.postForObject(API_BASE_URL + "/transfer/" + transfer.getAccountFrom() + "/" + transfer.getAccountTo(),
-                    makeTransferEntity(transfer), Transfer.class);
-            success = true;
+            success = restTemplate.exchange(API_BASE_URL + "/transfer/" + transfer.getAccountFrom() + "/"
+                    + transfer.getAccountTo(), HttpMethod.POST,makeTransferEntity(transfer),Boolean.class).getBody();
+//            restTemplate.postForObject(API_BASE_URL + "/transfer/" + transfer.getAccountFrom() + "/" + transfer.getAccountTo(),
+//                    makeTransferEntity(transfer), Transfer.class);
+           // success = true;
         } catch (RestClientResponseException | ResourceAccessException e) {
             BasicLogger.log(e.getMessage());
         }

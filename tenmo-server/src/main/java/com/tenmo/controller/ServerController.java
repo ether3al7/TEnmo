@@ -47,12 +47,12 @@ public class ServerController {
         return userDao.findAll();
     }
 
-    @GetMapping(path= "/user/{id}")
-    public Integer getAccountId(@PathVariable int id){return accountDao.getAccountId(id); }
+//    @GetMapping(path= "/user/{id}")
+//    public Integer getAccountId(@PathVariable int id){return accountDao.getAccountId(id); }
 
     @PostMapping(path="/transfer/{userFrom}/{userTo}")
     public boolean createTransfer(@RequestBody Transfer transfer, @PathVariable int userFrom, @PathVariable int userTo) throws Exception {
-        return transferDao.sendTransfer(transfer,userFrom,userTo);
+        return transferDao.createTransfer(transfer);
     }
 
     @GetMapping(path="/transfer/history/{id}")

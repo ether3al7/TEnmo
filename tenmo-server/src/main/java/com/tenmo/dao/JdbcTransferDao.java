@@ -45,33 +45,38 @@ public class JdbcTransferDao implements TransferDao {
         return transfer;
     }
 
-    @Override
-    public boolean sendTransfer(Transfer transfer, int userFrom, int userTo)  throws Exception {
-        boolean success = false;
-        String sql = "INSERT INTO transfer (transfer_type_id, transfer_status_id, account_from, account_to, amount) "
-                + "VALUES (?, ?, ?, ?, ?)";
-        if (transfer.getAmount().doubleValue() > accountDao.getBalance(userFrom).doubleValue()) {
-            throw new Exception("Transfer failed due to a lack of funds");
-        } else {
-            jdbcTemplate.update(sql,transfer.getTransferID(),transfer.getTransferStatusId(), userFrom, userTo, transfer.getAmount());
+//    @Override
+//    public boolean sendTransfer(Transfer transfer, int userFrom, int userTo)  throws Exception {
+//        boolean success = false;
+//        String sql = "INSERT INTO transfer (transfer_type_id, transfer_status_id, account_from, account_to, amount) "
+//                + "VALUES (?, ?, ?, ?, ?)";
+//        if (transfer.getAmount().doubleValue() > accountDao.getBalance(userFrom).doubleValue()) {
+//            throw new Exception("Transfer failed due to a lack of funds");
+//        } else {
+//            jdbcTemplate.update(sql,transfer.getTransferID(),transfer.getTransferStatusId(), userFrom, userTo, transfer.getAmount());
+//
+//            String addSql = "UPDATE account SET balance = balance + ? WHERE account_id = ?";
+//            jdbcTemplate.update(addSql, transfer.getAmount(), userTo);
+//            String subtractSql = "UPDATE account SET balance = balance - ? WHERE account_id = ?";
+//            jdbcTemplate.update(subtractSql, transfer.getAmount(), userFrom);
+//            success = true;
+//        }
+//        return success;                     // success is always true? CHECK
+//    }
 
-            String addSql = "UPDATE account SET balance = balance + ? WHERE account_id = ?";
-            jdbcTemplate.update(addSql, transfer.getAmount(), userTo);
-            String subtractSql = "UPDATE account SET balance = balance - ? WHERE account_id = ?";
-            jdbcTemplate.update(subtractSql, transfer.getAmount(), userFrom);
-            success = true;
-        }
-        return success;                     // success is always true? CHECK
-    }
-
     @Override
-    public int createTransfer(Transfer transfer) {
+    public boolean createTransfer(Transfer transfer) {
         String sql = "INSERT INTO transfer (transfer_type_id, transfer_status_id, account_from, account_to,amount) "
-        + "VALUES (?, ?, ?, ?, ?) RETURNING transfer_id";
+        + "VALUES (?, ?, ?, ?, ?);"
+        + "UPDATE account SET balance = balance + ?"
+        + "WHERE account_id = ?;"
+        + "UPDATE account SET balance = balance - ?"
+        + "WHERE account_id = ?;";
 
-            Integer id = jdbcTemplate.update(sql, Integer.class, transfer.getTransferTypeId(), transfer.getTransferStatusId(), transfer.getAccountFrom(), transfer.getAccountTo(), transfer.getAmount());
+        return jdbcTemplate.update(sql,transfer.getTransferTypeId(),transfer.getTransferStatusId(),
+                transfer.getAccountFrom(),transfer.getAccountTo(),transfer.getAmount(),transfer.getAmount(),
+                transfer.getAccountTo(),transfer.getAmount(),transfer.getAccountFrom()) == 3;
 
-        return id;
     }
 
     private Transfer mapRowToTransfer(SqlRowSet rowSet) {
