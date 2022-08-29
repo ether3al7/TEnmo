@@ -57,7 +57,18 @@ public class TransferService {
 
         return success;
     }
-
+    /*public Transfer addTransfer(Transfer transfer) {
+        Transfer tran = null;
+        try {
+            tran = transfer;
+            tran = restTemplate.exchange(API_BASE_URL + "/transfer/{userFrom}/{userTo}", HttpMethod.POST, makeTransferEntity(tran), Transfer.class).getBody();
+        } catch (RestClientResponseException | ResourceAccessException e) {
+            BasicLogger.log(e.getMessage());
+        }
+        return tran;
+    }
+    this is a potential alt method for the add transfer method. instead of using boolena, we instantiate an object and use it to post to url
+*/
     public User[] getAllUsers() {
         User[] users = null;
         try {
