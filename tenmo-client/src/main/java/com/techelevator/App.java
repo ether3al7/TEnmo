@@ -97,7 +97,6 @@ public class App {
 
         Transfer[]transfers =  transferService.getAllTransfers(accountService.getAccountId(currentUser.getUser().getId()));
 
-//        Transfer[]transfers =  transferService.getAllTransfers(12);
 		User[]users = transferService.getAllUsers();
         String username = null;
 
@@ -106,12 +105,20 @@ public class App {
                 "ID          From/To                 Amount\n" +
                 "-------------------------------------------");
         for (Transfer transfer : transfers) {
-            System.out.println(transfer.getTransferId() + " " + transfer.getAmount() + " " + transfer.getAccountFrom() + " " + transfer.getTransferTypeId());
+      //      System.out.println(transfer.getTransferId() + "          " + transfer.getAccountFrom() + "/" + transfer.getAccountTo() + "                " + transfer.getAmount());
             if (users != null) {
-                for (User user: users) {
-                    System.out.println("hewwo");
-                    if (accountService.getAccountId(user.getId()).equals(transfer.getAccountTo()) && !currentUser.getUser().getId().equals(user.getId()));
-                    username = user.getUsername();
+                for (User user: users) { //looping thru users to see if they were involved in transfer w/ current user
+
+                    if (accountService.getAccountId(user.getId()).equals(transfer.getAccountTo()) && !currentUser.getUser().getId().equals(user.getId())) {
+                        username = "To: " + user.getUsername();
+                        //we'll use above to print userTo name
+                    }
+
+                     if (accountService.getAccountId(user.getId()).equals(transfer.getAccountFrom())){
+                         username = "From: " + user.getUsername();
+                         //we'll use above to print userFrom name
+                     }
+                    System.out.println(transfer.getTransferId() + "          " + username + "                " + transfer.getAmount());
                 }
             }
         }

@@ -7,7 +7,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 public interface TransferDao {
-    public List<Transfer> getTransferList(int userId);
+    public List<Transfer> getTransferList(int id);
     public Transfer getTransferById(int transactionId);
   //  boolean sendTransfer(Transfer transfer, int userFrom, int userTo)  throws Exception;
 
