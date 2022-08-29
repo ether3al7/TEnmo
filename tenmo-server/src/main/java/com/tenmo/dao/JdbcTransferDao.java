@@ -36,11 +36,11 @@ public class JdbcTransferDao implements TransferDao {
     }
 
     @Override
-    public Transfer getTransferById(int transactionId) {
+    public Transfer getTransferById(int transferId) {
         Transfer transfer = null;
         String sql = "SELECT transfer_id, transfer_type_id, transfer_status_id, account_from, account_to, amount "
                 + "FROM transfer WHERE transfer_id = ?;";
-        SqlRowSet results = jdbcTemplate.queryForRowSet(sql);
+        SqlRowSet results = jdbcTemplate.queryForRowSet(sql,transferId);
         if (results.next()) {
             transfer = mapRowToTransfer(results);
         }

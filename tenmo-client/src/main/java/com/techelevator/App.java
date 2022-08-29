@@ -123,27 +123,20 @@ public class App {
                 }
                 System.out.println(transfer.getTransferID() + "          From: " + username + "                " + transfer.getAmount());
             }
-
-
-//            if (users != null) {
-//                for (User user: users) { //looping thru users to see if they were involved in transfer w/ current user
-//
-//                    if (accountService.getAccountId(user.getId()).equals(transfer.getAccountTo()) && !currentUser.getUser().getId().equals(user.getId())) {
-//                        username = "To: " + user.getUsername();
-//                        //we'll use above to print userTo name
-//                    }
-//
-//                     if (accountService.getAccountId(user.getId()).equals(transfer.getAccountFrom())){
-//                         username = "From: " + user.getUsername();
-//                         //we'll use above to print userFrom name
-//                     }
-//                    System.out.println(transfer.getTransferId() + "          " + username + "                " + transfer.getAmount());
-//                }
-//            }
-
-
-
         }
+        System.out.println("\n---------\n");
+        ConsoleService console = new ConsoleService();
+        Integer transferId = console.promptForInt("Please enter transfer ID to view details (0 to cancel): ");
+
+        //transferDetails
+       for (Transfer transfer : transfers) {
+           if (transfer.equals(transferService.getTransferDetails(transferId))) {
+               System.out.println("\n--------------------------------------------\n" +
+                       "Transfer Details\n" +
+                       "--------------------------------------------\n");
+               System.out.println("Exists");
+           }
+       }
 	}
 
 	private void viewPendingRequests() {
@@ -190,15 +183,10 @@ public class App {
                 //these 2 lines above need account id, was passing thru user id
                 transfer.setAmount(amountToSend);
 
-                transferService.addTransfer(transfer); //<-- causing 500 error here,
-                //we are using user id for transfer
+                transferService.addTransfer(transfer);
 
                 BigDecimal remainingBalance = accountService.getBalance(currentUser).subtract(amountToSend);
-                System.out.println("remaining balance @ line 162 = " + remainingBalance);
                 accountService.getByUserId(userFrom).setBalance(remainingBalance);
-//             if(accountService.update(accountService.getByUserId(currentUser.getUser().getId()))){
-//                 System.out.println("true");
-//             } ^testing above
                 System.out.println("Remaining Balance: " + accountService.getBalance(currentUser));
 
             } else { // can clean this up
