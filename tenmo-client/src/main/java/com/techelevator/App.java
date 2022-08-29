@@ -96,6 +96,8 @@ public class App {
 	private void viewTransferHistory() {
 
         Transfer[]transfers =  transferService.getAllTransfers(accountService.getAccountId(currentUser.getUser().getId()));
+
+//        Transfer[]transfers =  transferService.getAllTransfers(12);
 		User[]users = transferService.getAllUsers();
         String username = null;
 
@@ -104,8 +106,10 @@ public class App {
                 "ID          From/To                 Amount\n" +
                 "-------------------------------------------");
         for (Transfer transfer : transfers) {
+            System.out.println(transfer.getTransferId() + " " + transfer.getAmount() + " " + transfer.getAccountFrom() + " " + transfer.getTransferTypeId());
             if (users != null) {
                 for (User user: users) {
+                    System.out.println("hewwo");
                     if (accountService.getAccountId(user.getId()).equals(transfer.getAccountTo()) && !currentUser.getUser().getId().equals(user.getId()));
                     username = user.getUsername();
                 }

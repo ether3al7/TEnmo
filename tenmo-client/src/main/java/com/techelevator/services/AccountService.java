@@ -47,10 +47,10 @@ public class AccountService {
     public Integer getAccountId(int id) {
         Integer accountId = null;
         try {
-            accountId = restTemplate.exchange(API_BASE_URL + "user/" + id, HttpMethod.GET, makeAuthEntity(), Integer.class).getBody();
-//            ResponseEntity<Integer> response = restTemplate.exchange(API_BASE_URL + "user/" + userId, HttpMethod.GET,
-//                    makeAuthEntity(), Integer.class);
-//            accountId = response.getBody();
+//            accountId = restTemplate.exchange(API_BASE_URL + "user/" + id, HttpMethod.GET, makeAuthEntity(), Integer.class).getBody();
+            ResponseEntity<Account> response = restTemplate.exchange(API_BASE_URL + "user/" + id, HttpMethod.GET,
+                    makeAuthEntity(), Account.class);
+            accountId = response.getBody().getAccountId();
 
         } catch (RestClientResponseException | ResourceAccessException e) {
             BasicLogger.log(e.getMessage());

@@ -1,0 +1,4 @@
+2022-08-29T10:36:08.3050561 404 : [{"timestamp":"2022-08-29T14:36:08.266+00:00","status":404,"error":"Not Found","message":"No message available","path":"/transfer/history/"}]
+2022-08-29T10:39:34.31965 404 : [{"timestamp":"2022-08-29T14:39:34.301+00:00","status":404,"error":"Not Found","message":"No message available","path":"/transfer/history/"}]
+2022-08-29T10:40:49.6461156 404 : [{"timestamp":"2022-08-29T14:40:49.626+00:00","status":404,"error":"Not Found","message":"No message available","path":"/transfer/history/"}]
+2022-08-29T10:41:44.2991444 404 : [{"timestamp":"2022-08-29T14:41:44.280+00:00","status":404,"error":"Not Found","message":"No message available","path":"/transfer/history/"}]
