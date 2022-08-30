@@ -99,17 +99,6 @@ public class App {
         System.out.println("\n Your current account balance is: $" + balance + "\n");
 	}
 
-//    private String getUsername(int accountId) {
-//        String username = null;
-//        User[] users = transferService.getAllUsers();
-//        for (User user : users) {
-//            if (accountService.getAccountId(user.getId()).equals(accountId)) {
-//                username = user.getUsername();
-//            }
-//        }
-//        return username;
-//    } trying to save code w this method, printing id twice
-
 	private void viewTransferHistory() {
 
         Transfer[]transfers =  transferService.getAllTransfers(accountService.getAccountId(currentUser.getUser().getId()));
@@ -125,30 +114,16 @@ public class App {
         for (Transfer transfer : transfers) {
 
             if (accountService.getAccountId(currentUser.getUser().getId()).equals(transfer.getAccountFrom())) {
-                for (User user : users) {
-                    if (accountService.getAccountId(user.getId()).equals(transfer.getAccountTo())) {
-                        username = user.getUsername();
-    //            username = getUsername(transfer.getAccountFrom());
-                    }
-                }
+                username = getUsername(transfer.getAccountTo());
                 System.out.println(transfer.getTransferID() + "        To:   " + username + "                " + transfer.getAmount());
             }
             else if (accountService.getAccountId(currentUser.getUser().getId()).equals(transfer.getAccountTo())) {
-                for (User user : users) {
-                    if (accountService.getAccountId(user.getId()).equals(transfer.getAccountFrom())) {
-                        username = user.getUsername();
-                    }
-                //      username = getUsername(transfer.getAccountTo());
-                }
+                username = getUsername(transfer.getAccountFrom());
                 System.out.println(transfer.getTransferID() + "        From: " + username + "                " + transfer.getAmount());
             }
         }
         System.out.println("\n---------\n");
         ConsoleService console = new ConsoleService();
-//        Integer transferId = console.promptForInt("Please enter transfer ID to view details (0 to cancel): ");
-//        if(transferId == 0) {
-//            mainMenu();
-//        }
 
         //transferDetails
         Integer transferId = console.promptForInt("Please enter transfer ID to view details (0 to cancel): ");
@@ -178,24 +153,6 @@ public class App {
         }  else {
             System.out.println("Invalid ID Entered.");
         }
-
-//        for (Transfer transfer : transfers) {
-//            if (transfer.getTransferID() == transferId) {
-//
-//               System.out.println("\n--------------------------------------------\n" +
-//                       "Transfer Details\n" +
-//                       "--------------------------------------------\n");
-//               System.out.println("Id: " + transfer.getTransferID() + "\n"
-//                       + "From: " + accountService.getUsername(transfer.getAccountFrom())+ "\n"
-//                       + "To: " + accountService.getUsername(transfer.getAccountTo())+ "\n"
-//                       + "Type: Send \n"
-//                       + "Status: Approved \n"
-//                       + "Amount: " + transfer.getAmount());
-//               break;
-//           }
-//
-//            System.out.println("Invalid ID Entered.");
-//        }
     }
 
 	private void viewPendingRequests() {
@@ -258,5 +215,16 @@ public class App {
 		// TODO Auto-generated method stub
 		
 	}
+
+    private String getUsername(int accountId) {
+        String username = null;
+        User[] users = transferService.getAllUsers();
+        for (User user : users) {
+            if (accountService.getAccountId(user.getId()).equals(accountId)) {
+                username = user.getUsername();
+            }
+        }
+        return username;
+    }
 
 }
