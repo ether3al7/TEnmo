@@ -15,3 +15,5 @@
 2022-08-29T16:38:07.6492255 500 : [{"timestamp":"2022-08-29T20:38:07.649+00:00","status":500,"error":"Internal Server Error","message":"StatementCallback; bad SQL grammar [SELECT transfer_id, transfer_type_id, transfer_status_id, accou... (413 bytes)]
 2022-08-29T16:38:07.6648554 500 : [{"timestamp":"2022-08-29T20:38:07.664+00:00","status":500,"error":"Internal Server Error","message":"StatementCallback; bad SQL grammar [SELECT transfer_id, transfer_type_id, transfer_status_id, accou... (413 bytes)]
 2022-08-29T19:55:55.5406676 500 : [{"timestamp":"2022-08-29T23:55:55.303+00:00","status":500,"error":"Internal Server Error","message":"PreparedStatementCallback; SQL [INSERT INTO transfer (transfer_type_id, transfer_status_id, account... (792 bytes)]
+2022-08-29T21:26:27.226106 404 : [{"timestamp":"2022-08-30T01:26:27.212+00:00","status":404,"error":"Not Found","message":"Account not found.","path":"/user/-16"}]
+2022-08-29T21:51:26.0529131 401 : [no body]
