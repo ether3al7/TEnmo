@@ -10,7 +10,6 @@ import com.techelevator.services.ConsoleService;
 import com.techelevator.services.TransferService;
 
 import java.math.BigDecimal;
-import java.util.InputMismatchException;
 import java.util.NoSuchElementException;
 
 public class App {
@@ -183,7 +182,8 @@ public class App {
             mainMenu();
         } else if(userTo.equals(userFrom)) {
             System.out.println("\nTransaction cancelled: You cannot seed money to yourself! Please try again\n");
-
+        } else if(accountService.getByUserId(userTo) == null) {
+            System.out.println("\nTransaction cancelled: Account does not exist. Please try again\n");
         } else {
             System.out.println("Your current balance: " + accountService.getByUserId(userFrom).getBalance());
 
