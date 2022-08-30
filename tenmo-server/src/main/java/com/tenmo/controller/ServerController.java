@@ -31,6 +31,9 @@ public class ServerController {
         return accountDao.getBalance(id);
     }
 
+    @GetMapping(path= "/username/{id}")
+    public String getUsername(@PathVariable int id) { return accountDao.getUsername(id);}
+
     @GetMapping(path= "/user/{id}")
     public Account getByUserId(@PathVariable int id) {
         return accountDao.findByUserId(id);
@@ -69,4 +72,6 @@ public class ServerController {
     public Account updateAccount(@PathVariable int id, Account account) {
         return accountDao.updateAccountBalance(id, account);
     }
+
+
 }

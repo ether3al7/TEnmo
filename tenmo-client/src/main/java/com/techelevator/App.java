@@ -97,6 +97,17 @@ public class App {
         System.out.println("\n Your current account balance is: $" + balance + "\n");
 	}
 
+//    private String getUsername(int accountId) {
+//        String username = null;
+//        User[] users = transferService.getAllUsers();
+//        for (User user : users) {
+//            if (accountService.getAccountId(user.getId()).equals(accountId)) {
+//                username = user.getUsername();
+//            }
+//        }
+//        return username;
+//    } trying to save code w this method, printing id twice
+
 	private void viewTransferHistory() {
 
         Transfer[]transfers =  transferService.getAllTransfers(accountService.getAccountId(currentUser.getUser().getId()));
@@ -115,6 +126,7 @@ public class App {
                 for (User user : users) {
                     if (accountService.getAccountId(user.getId()).equals(transfer.getAccountTo())) {
                         username = user.getUsername();
+    //            username = getUsername(transfer.getAccountFrom());
                     }
                 }
                 System.out.println(transfer.getTransferID() + "        To:   " + username + "                " + transfer.getAmount());
@@ -124,37 +136,39 @@ public class App {
                     if (accountService.getAccountId(user.getId()).equals(transfer.getAccountFrom())) {
                         username = user.getUsername();
                     }
+                //      username = getUsername(transfer.getAccountTo());
                 }
                 System.out.println(transfer.getTransferID() + "        From: " + username + "                " + transfer.getAmount());
             }
         }
         System.out.println("\n---------\n");
         ConsoleService console = new ConsoleService();
-        Integer transferId = console.promptForInt("Please enter transfer ID to view details (0 to cancel): ");
-        if(transferId == 0) {
-            mainMenu();
-        }
+//        Integer transferId = console.promptForInt("Please enter transfer ID to view details (0 to cancel): ");
+//        if(transferId == 0) {
+//            mainMenu();
+//        }
 
         //transferDetails
        for (Transfer transfer : transfers) {
-           if (transferId == 0) {
-               break;
+           Integer transferId = console.promptForInt("Please enter transfer ID to view details (0 to cancel): ");
+           if(transferId == 0) {
+               mainMenu();
            }
-           if (transfer.getTransferID() != transferService.getTransferDetails(transferId).getTransferID()){
-        //       System.out.println("Invalid id");
-           } else {
+
+           if (transfer.getTransferID() == transferId) {
+
                System.out.println("\n--------------------------------------------\n" +
                        "Transfer Details\n" +
                        "--------------------------------------------\n");
                System.out.println("Id: " + transfer.getTransferID() + "\n"
-                    //   + "From: " + transferService.getTransferDetails(accountService.getByAccountId(transfer.getAccountFrom()).getUserId()).getAccountFrom() + "\n"
-//                       + "From: " + accountService.getByAccountId(transfer.getAccountFrom()).getUserId() + "\n"
-                       + "From: " + currentUser.getUser().getUsername()+ "\n"
-//                       + "To: " + transferService.getTransferDetails(accountService.getByAccountId(transfer.getAccountTo()).getUserId()).getAccountTo() + "\n"
-                       + "To: " + accountService.getByUserId(accountService.getByAccountId(transfer.getAccountTo()).getUserId()).getUserId() + "\n"
+                       + "From: " + accountService.getUsername(transfer.getAccountFrom())+ "\n"
+                       + "To: " + accountService.getUsername(transfer.getAccountTo())+ "\n"
                        + "Type: Send \n"
                        + "Status: Approved \n"
                        + "Amount: " + transfer.getAmount());
+               break;
+           } else {
+               System.out.println("Invalid ID Entered.");
                break;
            }
        }
@@ -182,50 +196,37 @@ public class App {
         ConsoleService console = new ConsoleService();
         // need Integer over int to use equals method in User class
         Integer userTo = console.promptForInt("Enter ID of user you are sending to (0 to cancel):");
-       // System.out.println(currentUser.getUser().getId()); //test
         Integer userFrom =  accountService.getByUserId(currentUser.getUser().getId()).getUserId();
 
         if(userTo == 0) {
             mainMenu();
         } else if(userTo.equals(userFrom)) {
-            System.out.println("");
-            System.out.println("Transaction cancelled. You cannot seed money to yourself! Please try again");
-            System.out.println("");
-            sendBucks();
+            System.out.println("\nTransaction cancelled: You cannot seed money to yourself! Please try again\n");
 
-
-            //work on this, still caught in line 212
-            //console service here, custom message prompt if user tries
-
-            System.out.println("userTo userId = " + userTo + " accountId = " + accountService.getByUserId(userTo).getAccountId() + " Balance = " + accountService.getByUserId(userTo).getBalance());
-            System.out.println("userFrom userId = " + userFrom + " accountId = " + accountService.getByUserId(userFrom).getAccountId() + " Balance = " + accountService.getByUserId(userFrom).getBalance());
-
-//        while (accountFrom.equals(userTo)) {
-//            userTo = console.promptForInt("Cannot send money to self");
-//        }
-//        will come back to validate above later
+        } else {
+            System.out.println("Your current balance: " + accountService.getByUserId(userFrom).getBalance());
 
             BigDecimal amountToSend = console.promptForBigDecimal("Enter amount:");
-            if (amountToSend.compareTo(accountService.getBalance(currentUser)) <= 0 && amountToSend.intValue() > 0) {
+            if (amountToSend.intValue() <= 0) {
+                System.out.println("Transaction Cancelled: Amount entered must be greater than 0.");
+            } else if (amountToSend.compareTo(accountService.getBalance(currentUser)) <= 0) {
                 // -1, 0, 1 <-- Less than, equal to, greater than
-                //at this point, everything is valid
+
                 transfer.setTransferTypeId(2); //refer to tenmo.sql for numerical value
                 transfer.setTransferStatusId(2);
                 transfer.setAccountFrom(accountService.getByUserId(userFrom).getAccountId());
                 transfer.setAccountTo(accountService.getByUserId(userTo).getAccountId());
-                //these 2 lines above need account id, was passing thru user id
                 transfer.setAmount(amountToSend);
 
                 transferService.addTransfer(transfer);
 
                 BigDecimal remainingBalance = accountService.getBalance(currentUser).subtract(amountToSend);
                 accountService.getByUserId(userFrom).setBalance(remainingBalance);
-                System.out.println("Remaining Balance: " + accountService.getBalance(currentUser));
+                System.out.println("SUCCESS! \nRemaining Balance: " + accountService.getBalance(currentUser));
 
-            } else { // can clean this up, doesn't get caught if sent to self, account won't update regardless
-                System.out.println("Not enough money in account or money entered must be greater than 0");
+            } else {
+                System.out.println("Transaction canceled: Not enough money in account.");
             }
-            //    }
         }
 	}
 

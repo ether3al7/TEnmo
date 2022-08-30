@@ -10,6 +10,7 @@ public interface AccountDao {
     BigDecimal getBalance(String username);
     BigDecimal getBalance(int userId); //added this for JdbcTransferDao sendTransfer method
     Account updateAccountBalance(int id, Account account);
+    String getUsername(int id);
 
     int getAccountId(int userId);
 }

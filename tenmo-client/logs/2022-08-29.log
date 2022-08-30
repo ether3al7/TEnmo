@@ -17,3 +17,10 @@
 2022-08-29T19:55:55.5406676 500 : [{"timestamp":"2022-08-29T23:55:55.303+00:00","status":500,"error":"Internal Server Error","message":"PreparedStatementCallback; SQL [INSERT INTO transfer (transfer_type_id, transfer_status_id, account... (792 bytes)]
 2022-08-29T21:26:27.226106 404 : [{"timestamp":"2022-08-30T01:26:27.212+00:00","status":404,"error":"Not Found","message":"Account not found.","path":"/user/-16"}]
 2022-08-29T21:51:26.0529131 401 : [no body]
+2022-08-29T22:38:41.8208981 404 : [{"timestamp":"2022-08-30T02:38:41.492+00:00","status":404,"error":"Not Found","message":"No message available","path":"/username/2001"}]
+2022-08-29T22:52:33.5678021 404 : [{"timestamp":"2022-08-30T02:52:33.489+00:00","status":404,"error":"Not Found","message":"No message available","path":"/username/2001"}]
+2022-08-29T23:03:55.2832824 I/O error on POST request for "http://localhost:8080/login": Connection refused: connect; nested exception is java.net.ConnectException: Connection refused: connect
+2022-08-29T23:05:22.6467461 404 : [{"timestamp":"2022-08-30T03:05:22.584+00:00","status":404,"error":"Not Found","message":"No message available","path":"/username/2001"}]
+2022-08-29T23:05:22.7404755 404 : [{"timestamp":"2022-08-30T03:05:22.740+00:00","status":404,"error":"Not Found","message":"No message available","path":"/username/2002"}]
+2022-08-29T23:06:55.5925763 404 : [{"timestamp":"2022-08-30T03:06:55.514+00:00","status":404,"error":"Not Found","message":"No message available","path":"/username/2001"}]
+2022-08-29T23:06:55.6394399 404 : [{"timestamp":"2022-08-30T03:06:55.639+00:00","status":404,"error":"Not Found","message":"No message available","path":"/username/2002"}]

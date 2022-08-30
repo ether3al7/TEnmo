@@ -44,6 +44,13 @@ public class JdbcAccountDao implements AccountDao {
     }
 
     @Override
+    public String getUsername(int id) {
+        String sql = "SELECT username FROM tenmo_user JOIN account USING(user_id)" +
+                "WHERE account.account_id = ?;";
+       return jdbcTemplate.queryForObject(sql,String.class,id);
+    }
+
+    @Override
     public BigDecimal getBalance(String username) {
         Account account = new Account();
         String sql = "SELECT balance FROM account JOIN tenmo_user USING(user_id) WHERE username = ?;";
