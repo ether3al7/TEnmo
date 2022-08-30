@@ -130,11 +130,23 @@ public class App {
 
         //transferDetails
        for (Transfer transfer : transfers) {
-           if (transfer.equals(transferService.getTransferDetails(transferId))) {
+           if (transferId == 0) {
+               break;
+           }
+           if (transfer.getTransferID() != transferService.getTransferDetails(transferId).getTransferID()){
+        //       System.out.println("Invalid id");
+           } else {
                System.out.println("\n--------------------------------------------\n" +
                        "Transfer Details\n" +
                        "--------------------------------------------\n");
-               System.out.println("Exists");
+               System.out.println("Id: " + transfer.getTransferID() + "\n"
+                    //   + "From: " + transferService.getTransferDetails(accountService.getByAccountId(transfer.getAccountFrom()).getUserId()).getAccountFrom() + "\n"
+                       + "From " + accountService.getByAccountId(transfer.getAccountFrom()).getUserId() + "\n"
+                   //    + "To: " + transferService.getTransferDetails(accountService.getByAccountId(transfer.getAccountTo()).getUserId()).getAccountTo() + "\n"
+                       + "Type: Send \n"
+                       + "Status: Approved \n"
+                       + "Amount: " + transfer.getAmount());
+               break;
            }
        }
 	}
@@ -164,8 +176,17 @@ public class App {
        // System.out.println(currentUser.getUser().getId()); //test
         Integer userFrom =  accountService.getByUserId(currentUser.getUser().getId()).getUserId();
 
-        System.out.println("userTo userId = " + userTo + " accountId = " + accountService.getByUserId(userTo).getAccountId() + " Balance = " + accountService.getByUserId(userTo).getBalance());
-        System.out.println("userFrom userId = " + userFrom + " accountId = " + accountService.getByUserId(userFrom).getAccountId() + " Balance = " + accountService.getByUserId(userFrom).getBalance());
+//        if(userTo == 0) {
+//            mainMenu();
+//        } else if(userTo.equals(userFrom)){
+//            System.out.println("\n Transaction cancelled. You cannot seed money to yourself! Please try again \n");
+//            sendBucks();
+//        } else {
+        //work on this, still caught in line 212
+        //console service here, custom message prompt if user tries
+
+            System.out.println("userTo userId = " + userTo + " accountId = " + accountService.getByUserId(userTo).getAccountId() + " Balance = " + accountService.getByUserId(userTo).getBalance());
+            System.out.println("userFrom userId = " + userFrom + " accountId = " + accountService.getByUserId(userFrom).getAccountId() + " Balance = " + accountService.getByUserId(userFrom).getBalance());
 
 //        while (accountFrom.equals(userTo)) {
 //            userTo = console.promptForInt("Cannot send money to self");
@@ -189,10 +210,10 @@ public class App {
                 accountService.getByUserId(userFrom).setBalance(remainingBalance);
                 System.out.println("Remaining Balance: " + accountService.getBalance(currentUser));
 
-            } else { // can clean this up
+            } else { // can clean this up, doesn't get caught if sent to self, account won't update regardless
                 System.out.println("Not enough money in account or money entered must be greater than 0");
             }
-
+    //    }
 	}
 
 	private void requestBucks() {

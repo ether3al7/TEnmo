@@ -68,4 +68,15 @@ public class Transfer  {
 
     public void setAmount(BigDecimal amount) {
         this.amount = amount;
-    }}
+    }
+
+//    public String toString() {
+//        String contents = "Id: " + getTransferID() + "\n"
+//                + "From: " + getAccountFrom() + "\n"
+//                + "To: " + getAccountTo() + "\n"
+//                + "Type: Send \n"
+//                + "Status: Approved \n"
+//                + "Amount: " + getAmount();
+//        return contents;
+//    }
+    }
