@@ -2,7 +2,7 @@ package com.tenmo.model;
 
 import java.math.BigDecimal;
 
-public class Transfer  {
+public class Transfer {
     private int transferID;
     private int transferTypeId;
     private int transferStatusId;
@@ -70,13 +70,4 @@ public class Transfer  {
         this.amount = amount;
     }
 
-//    public String toString() {
-//        String contents = "Id: " + getTransferID() + "\n"
-//                + "From: " + getAccountFrom() + "\n"
-//                + "To: " + getAccountTo() + "\n"
-//                + "Type: Send \n"
-//                + "Status: Approved \n"
-//                + "Amount: " + getAmount();
-//        return contents;
-//    }
-    }
+}

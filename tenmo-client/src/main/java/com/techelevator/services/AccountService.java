@@ -3,7 +3,6 @@ package com.techelevator.services;
 import com.techelevator.model.Account;
 import com.techelevator.model.AuthenticatedUser;
 import com.techelevator.util.BasicLogger;
-import org.apiguardian.api.API;
 import org.springframework.http.*;
 import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestClientResponseException;
@@ -14,7 +13,7 @@ import java.math.BigDecimal;
 public class AccountService {
 
     private static final String API_BASE_URL = "http://localhost:8080/";
-    private RestTemplate restTemplate = new RestTemplate();
+    private final RestTemplate restTemplate = new RestTemplate();
     private AuthenticatedUser authenticatedUser;
     //private String token;
     //    public void setToken(String token){

@@ -14,8 +14,8 @@ import java.util.List;
 public class JdbcTransferDao implements TransferDao {
 
     @Autowired
-    private JdbcTemplate jdbcTemplate;
-    private AccountDao accountDao;
+    private final JdbcTemplate jdbcTemplate;
+    private final AccountDao accountDao;
     public JdbcTransferDao(AccountDao accountDao, DataSource dataSource) {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
         this.accountDao = accountDao;
@@ -47,28 +47,9 @@ public class JdbcTransferDao implements TransferDao {
         return transfer;
     }
 
-//    @Override
-//    public boolean sendTransfer(Transfer transfer, int userFrom, int userTo)  throws Exception {
-//        boolean success = false;
-//        String sql = "INSERT INTO transfer (transfer_type_id, transfer_status_id, account_from, account_to, amount) "
-//                + "VALUES (?, ?, ?, ?, ?)";
-//        if (transfer.getAmount().doubleValue() > accountDao.getBalance(userFrom).doubleValue()) {
-//            throw new Exception("Transfer failed due to a lack of funds");
-//        } else {
-//            jdbcTemplate.update(sql,transfer.getTransferID(),transfer.getTransferStatusId(), userFrom, userTo, transfer.getAmount());
-//
-//            String addSql = "UPDATE account SET balance = balance + ? WHERE account_id = ?";
-//            jdbcTemplate.update(addSql, transfer.getAmount(), userTo);
-//            String subtractSql = "UPDATE account SET balance = balance - ? WHERE account_id = ?";
-//            jdbcTemplate.update(subtractSql, transfer.getAmount(), userFrom);
-//            success = true;
-//        }
-//        return success;                     // success is always true? CHECK
-//    }
-
     @Override
     public boolean createTransfer(Transfer transfer) {
-        String sql = "INSERT INTO transfer (transfer_type_id, transfer_status_id, account_from, account_to,amount) "
+        String sql = "INSERT INTO transfer (transfer_type_id, transfer_status_id, account_from, account_to, amount) "
         + "VALUES (?, ?, ?, ?, ?);"
         + "UPDATE account SET balance = balance + ?"
         + "WHERE account_id = ?;"

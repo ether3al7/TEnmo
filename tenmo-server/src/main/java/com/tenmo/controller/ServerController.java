@@ -6,10 +6,10 @@ import com.tenmo.dao.UserDao;
 import com.tenmo.model.Account;
 import com.tenmo.model.Transfer;
 import com.tenmo.model.User;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
-import java.security.Principal;
 import java.util.List;
 
 @RestController
@@ -50,9 +50,7 @@ public class ServerController {
         return userDao.findAll();
     }
 
-//    @GetMapping(path= "/user/{id}")
-//    public Integer getAccountId(@PathVariable int id){return accountDao.getAccountId(id); }
-
+    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(path="/transfer/{userFrom}/{userTo}")
     public boolean createTransfer(@RequestBody Transfer transfer, @PathVariable int userFrom, @PathVariable int userTo) throws Exception {
         return transferDao.createTransfer(transfer);

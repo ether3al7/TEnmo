@@ -65,10 +65,7 @@ public class JdbcAccountDao implements AccountDao {
     public BigDecimal getBalance(int userId) { //added this method for if condition in sendTransfer
        // Account account = new Account(); <--why do we need this?
         String sql = "SELECT balance FROM account WHERE user_id = ?;";
-        //        SqlRowSet results = jdbcTemplate.queryForRowSet(sql, userId);
-//        if (results.next()) {
-//            account = mapRowToAccount(results);
-//        }
+
         return jdbcTemplate.queryForObject(sql,BigDecimal.class, userId);
     }
 
