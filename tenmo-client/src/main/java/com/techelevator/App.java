@@ -10,6 +10,8 @@ import com.techelevator.services.ConsoleService;
 import com.techelevator.services.TransferService;
 
 import java.math.BigDecimal;
+import java.util.InputMismatchException;
+import java.util.NoSuchElementException;
 
 public class App {
 
@@ -149,30 +151,52 @@ public class App {
 //        }
 
         //transferDetails
-       for (Transfer transfer : transfers) {
-           Integer transferId = console.promptForInt("Please enter transfer ID to view details (0 to cancel): ");
-           if(transferId == 0) {
+        Integer transferId = console.promptForInt("Please enter transfer ID to view details (0 to cancel): ");
+        if(transferId == 0) {
                mainMenu();
-           }
+        }
 
-           if (transfer.getTransferID() == transferId) {
+        Transfer transferDetails = null;
 
-               System.out.println("\n--------------------------------------------\n" +
-                       "Transfer Details\n" +
-                       "--------------------------------------------\n");
-               System.out.println("Id: " + transfer.getTransferID() + "\n"
-                       + "From: " + accountService.getUsername(transfer.getAccountFrom())+ "\n"
-                       + "To: " + accountService.getUsername(transfer.getAccountTo())+ "\n"
-                       + "Type: Send \n"
-                       + "Status: Approved \n"
-                       + "Amount: " + transfer.getAmount());
-               break;
-           } else {
-               System.out.println("Invalid ID Entered.");
-               break;
-           }
-       }
-	}
+        try {
+            transferDetails = transferService.getTransferDetails(transferId);
+        }  catch (NoSuchElementException e) {
+            System.out.println("Invalid ID Entered.");
+            // This doesn't seem to output to console, but it does catch the program from crashing.
+        }
+
+        if (transferDetails != null) {
+            System.out.println("\n--------------------------------------------\n" +
+                    "Transfer Details\n" +
+                    "--------------------------------------------\n");
+            System.out.println("Id: " + transferDetails.getTransferID() + "\n"
+                    + "From: " + accountService.getUsername(transferDetails.getAccountFrom()) + "\n"
+                    + "To: " + accountService.getUsername(transferDetails.getAccountTo()) + "\n"
+                    + "Type: Send \n"
+                    + "Status: Approved \n"
+                    + "Amount: " + transferDetails.getAmount());
+        }  else {
+            System.out.println("Invalid ID Entered.");
+        }
+
+//        for (Transfer transfer : transfers) {
+//            if (transfer.getTransferID() == transferId) {
+//
+//               System.out.println("\n--------------------------------------------\n" +
+//                       "Transfer Details\n" +
+//                       "--------------------------------------------\n");
+//               System.out.println("Id: " + transfer.getTransferID() + "\n"
+//                       + "From: " + accountService.getUsername(transfer.getAccountFrom())+ "\n"
+//                       + "To: " + accountService.getUsername(transfer.getAccountTo())+ "\n"
+//                       + "Type: Send \n"
+//                       + "Status: Approved \n"
+//                       + "Amount: " + transfer.getAmount());
+//               break;
+//           }
+//
+//            System.out.println("Invalid ID Entered.");
+//        }
+    }
 
 	private void viewPendingRequests() {
 		// TODO Auto-generated method stub
