@@ -13,10 +13,11 @@ public class TransferService {
     private static final String API_BASE_URL = "http://localhost:8080/";
     private final RestTemplate restTemplate = new RestTemplate();
     private AuthenticatedUser authenticatedUser;
-    //private String token;
-    //    public void setToken(String token){
-    //        this.token = token;
-    //    }
+
+    public TransferService(AuthenticatedUser user) {
+        this.authenticatedUser = user;
+    }
+
 
     public Transfer[] getAllTransfers(int id) {
         Transfer[] transfers = null;
@@ -29,6 +30,7 @@ public class TransferService {
         }
         return transfers;
     }
+
 
     public Transfer getTransferDetails(int id) {
         Transfer transfer = null;
@@ -43,6 +45,7 @@ public class TransferService {
         return transfer;
     }
 
+
     public boolean addTransfer(Transfer transfer) {
         boolean success = false;
         try {
@@ -55,6 +58,7 @@ public class TransferService {
 
         return success;
     }
+
 
     public User[] getAllUsers() {
         User[] users = null;
@@ -69,16 +73,17 @@ public class TransferService {
         return users;
     }
 
+
     private HttpEntity<Transfer> makeTransferEntity(Transfer transfer) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-        //  headers.setBearerAuth(token);
+        headers.setBearerAuth(authenticatedUser.getToken());
         return new HttpEntity<>(transfer, headers);
     }
 
     private HttpEntity<Void> makeAuthEntity() {
         HttpHeaders headers = new HttpHeaders();
-        //   headers.setBearerAuth(token);
+        headers.setBearerAuth(authenticatedUser.getToken());
         return new HttpEntity<>(headers);
     }
 }

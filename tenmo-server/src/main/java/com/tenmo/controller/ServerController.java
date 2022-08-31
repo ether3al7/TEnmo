@@ -7,13 +7,14 @@ import com.tenmo.model.Account;
 import com.tenmo.model.Transfer;
 import com.tenmo.model.User;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
-//@PreAuthorize("isAuthenticated()")
+@PreAuthorize("isAuthenticated()")
 //@RequestMapping
 public class ServerController {
     private AccountDao accountDao;
@@ -25,6 +26,7 @@ public class ServerController {
         this.transferDao = transferDao;
         this.userDao = userDao;
     }
+
      //Account
     @GetMapping(path= "/account/balance/{id}")
     public BigDecimal getBalance(@PathVariable int id) {

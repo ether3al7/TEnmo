@@ -18,8 +18,8 @@ public class App {
     private final ConsoleService consoleService = new ConsoleService();
     private final AuthenticationService authenticationService = new AuthenticationService(API_BASE_URL);
     private AuthenticatedUser currentUser;
-    private final AccountService accountService = new AccountService();
-    private final TransferService transferService = new TransferService();
+    private AccountService accountService = new AccountService(currentUser);
+    private TransferService transferService = new TransferService(currentUser);
 
 
     public static void main(String[] args) {
@@ -63,6 +63,8 @@ public class App {
     private void handleLogin() {
         UserCredentials credentials = consoleService.promptForCredentials();
         currentUser = authenticationService.login(credentials);
+        accountService = new AccountService(currentUser);
+        transferService = new TransferService(currentUser);
         if (currentUser == null) {
             consoleService.printErrorMessage();
         }
